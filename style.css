@@ -1,0 +1,24 @@
+.flex {
+    display: flex;
+  }
+  
+.items-center {
+    align-items: center;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.ml-2 {
+    margin-left: 0.5rem;
+}
+
+.color {
+    color: red;
+}
+
+#language-select {
+    appearance: none;
+}
+  

@@ -1,0 +1,24 @@
+{
+    "manifest_version": 3,
+    "name": "chat-gpt-audio",
+    "description": "The chatgpt-audio-extension is a tool that allows users to input text into web page text fields using audio. By clicking the microphone button next to a text field, users can speak their input and have it transcribed in real-time. This extension is particularly useful for users who may have difficulty typing, such as those with mobility impairments. The chatgpt-audio-extension uses the Web Speech API to handle audio input and transcription.",
+    "version": "1.0",
+    "icons": {
+        "16": "icon.png",
+        "32": "icon.png",
+        "48": "icon.png",
+        "128": "icon.png"
+      },
+    "content_scripts": [
+    {
+        "matches": [
+            "https://chat.openai.com/*"
+        ],
+        "css": ["style.css"],
+        "js": ["content.js"]
+    }
+    ],
+    "permissions": [
+        "activeTab"
+    ]
+}
