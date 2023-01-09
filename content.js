@@ -122,7 +122,9 @@ inputs.forEach((input) => {
       for (const result of event.results) {
         transcript += result[0].transcript;
       }
-      input.value = transcript;
+      if(transcript!=""){
+        input.value = transcript;
+      }
   });
   
   
