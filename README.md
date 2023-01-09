@@ -2,7 +2,8 @@
 
 
 [![GitHub release](https://img.shields.io/github/release/ParisNeo/chatgpt-audio-extension.svg)](https://github.com/ParisNeo/chagpt-audio-extension/releases)
-
+[![GitHub license](https://img.shields.io/github/license/ParisNeo/chatgpt-audio-extension.svg)](https://github.com/ParisNeo/chatgpt-audio-extension/blob/master/LICENSE)
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/fhbjgbiflinjbdggehcddcbncdddomop.svg)](https://chrome.google.com/webstore/detail/chatgpt-audio-extension/fhbjgbiflinjbdggehcddcbncdddomop)
 The chatgpt-audio-extension is a tool that allows users to input and output text using audio to communicate with chatgpt. When chatgpt page is loaded, this extention adds a microphone button next to the input fields and speaker button next to chatgpt answers. By clicking the microphone button next to a text field, users can speak their input and have it transcribed in real-time. They can also use the speaker button to have the text spoken out loud using the Web Speech API's speech synthesis feature. This extension is particularly useful for users who may have difficulty typing or reading, such as those with mobility or vision impairments.
 
 ## Features
