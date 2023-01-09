@@ -18,7 +18,7 @@ The chatgpt-audio-extension is a tool that allows users to input and output text
 
 ## Installation
 
-1. Download the extension from the [Releases](https://github.com/ParisNeo/chagpt-audio-extention/releases) page.
+1. Download the extension from the [Releases](https://github.com/ParisNeo/chagpt-audio-extension/releases) page.
 2. Open the extensions page in Chrome (`chrome://extensions`).
 3. Enable "Developer mode" in the top right corner.
 4. Click "Load unpacked" and select the extension folder.
