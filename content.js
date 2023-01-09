@@ -1,11 +1,46 @@
-const inputs =  document.querySelectorAll("input[type='text'], textarea");
-const good_bad = document.getElementsByClassName("text-gray-400 flex self-end lg:self-center justify-center mt-2 gap-4 lg:gap-1 lg:absolute lg:top-0 lg:translate-x-full lg:right-0 lg:mt-0 lg:pl-2 visible")
+function splitString(string, maxLength) {
+  const sentences = string.match(/[^.!?]+[.!?]/g);
+  const strings = [];
+  let currentString = '';
+
+  if (sentences) {
+    for (const sentence of sentences) {
+      if (currentString.length + sentence.length > maxLength) {
+        strings.push(currentString);
+        currentString = '';
+      }
+
+      currentString += `${sentence} `;
+    }
+  } else {
+    strings.push(string);
+  }
+
+  if (currentString) {
+    strings.push(currentString);
+  }
+
+  return strings;
+}
+
+
+function addListeners(button, utterThis){
+  console.log("Adding listeners")
+  utterThis.onstart = (event) => {
+    button.style.backgroundColor = "red";
+    button.style.boxShadow = "2px 2px 0.5px #808080";
+  };
+  
+  utterThis.onend = (event) => {
+    button.style.backgroundColor = "";
+    button.style.boxShadow = "";
+  };
+}
+
 
 const synth = window.speechSynthesis || webkitspeechSynthesis;
 voices = synth.getVoices();
 
-console.log(good_bad)
-console.log(`Found :${inputs}`)
 const SpeechRecognition = window.SpeechRecognition || webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
 recognition.continuous = true;
@@ -13,6 +48,27 @@ recognition.interimResults = true;
 recognition.maxAlternatives = 10
 let isStarted = false;
 let isSpeaking= false;
+
+
+var insertedNodes = [];
+var observer = new WebKitMutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+        for(var i = 0; i < mutation.addedNodes.length; i++)
+            insertedNodes.push(mutation.addedNodes[i]);
+    })
+});
+observer.observe(document, {
+    childList: true
+});
+console.log(insertedNodes);
+
+
+const inputs =  document.querySelectorAll("input[type='text'], textarea");
+const good_bad = document.getElementsByClassName("text-gray-400 flex self-end lg:self-center justify-center mt-2 gap-4 lg:gap-1 lg:absolute lg:top-0 lg:translate-x-full lg:right-0 lg:mt-0 lg:pl-2 visible")
+console.log(good_bad)
+console.log(`Found :${inputs}`)
+
+
 
 inputs.forEach((input) => {
   const button = document.createElement("button");
@@ -72,10 +128,12 @@ inputs.forEach((input) => {
   
   recognition.addEventListener("start", () => {
     button.style.backgroundColor = "red";
+    button.style.boxShadow = "2px 2px 0.5px #808080";
   });
   
   recognition.addEventListener("end", () => {
     button.style.backgroundColor = "";
+    button.style.boxShadow = "";
   });
   
   
@@ -110,7 +168,6 @@ Array.prototype.forEach.call(good_bad, (gb) => {
   voices = []
   function populateVoiceList() {
     voices = synth.getVoices();
-    console.log(`voicies : ${voices}`)
     selects.forEach((select)=>{
       for (let i = 0; i < voices.length ; i++) {
         const option = document.createElement('option');
@@ -131,6 +188,7 @@ Array.prototype.forEach.call(good_bad, (gb) => {
     speechSynthesis.onvoiceschanged = populateVoiceList;
   }
   
+  
   button.addEventListener("click", () => {
     if(isSpeaking)
     {
@@ -139,34 +197,37 @@ Array.prototype.forEach.call(good_bad, (gb) => {
     }
     else{
       isSpeaking=true;
-      text=""
-      var div = wrapper.previousSibling.querySelectorAll("p");
-      console.log(div.length);
-      if(div.length==0)
-      {
-        var div = wrapper.previousSibling.querySelectorAll("div");
-        div.forEach((p) => {
-          text = text + p.innerHTML
-        });
-    
-      }
-      else{
-        div.forEach((p) => {
-          text = text + p.innerHTML
-        });
-    
-      }
+      text=wrapper.previousSibling.textContent;
       console.log(text)
-      const utterThis = new SpeechSynthesisUtterance(text);
+
+
       const selectedOption = select.selectedOptions[0].getAttribute('data-name');
+      var selectedVoice = null;
       for (let i = 0; i < voices.length ; i++) {
         if (voices[i].name === selectedOption) {
-          utterThis.voice = voices[i];
+          selectedVoice = voices[i];
         }
       }
-      synth.speak(utterThis);      
+      console.log(selectedVoice.voiceURI)
+      if (selectedVoice && selectedVoice.voiceURI === 'native'){
+        console.log("native");
+        const utterThis = new SpeechSynthesisUtterance(text);
+        utterThis.voice = selectedVoice
+        addListeners(button, utterThis)
+        synth.speak(utterThis); 
+      }
+      else{
+        console.log("Not native");
+        texts = splitString(text, 200);
+        texts.forEach((text)=>{
+          const utterThis = new SpeechSynthesisUtterance(text);
+          utterThis.voice = selectedVoice
+          addListeners(button, utterThis)
+          synth.speak(utterThis);   
+        })
+      }
     }
-
+  
 
   });
   

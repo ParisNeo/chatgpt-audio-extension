@@ -26,4 +26,8 @@
     appearance: none;
     padding-left: 5px;
 }
+
+button{
+    border-radius: 10px;
+}
   
